@@ -1,0 +1,13 @@
+This Repo containes two scripts,
+
+1 - For creating individual excel sheets from given excel with multiple sheets.
+
+	file name - Create_excel_sheet_2.py
+	notebook name - Create_excel_sheet_2.ipynb
+
+2 - From the Excel sheets with multiple sub sheets create a Json based on given reference Json and instert record in pmitemmasterforms table
+
+	file name - Excel_to_DB_allsheets.py
+	notebook name - Excel_to_DB_allsheets.ipynb
+
+for testing this file create database.ini with proper db credentials

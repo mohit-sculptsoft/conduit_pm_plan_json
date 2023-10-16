@@ -1,0 +1,169 @@
+{
+"display": "form",
+"components": [
+  {
+   "type": "header",
+   "title": "NFPA 70B® Visual Inspection Form",
+   "subTitle": "Dry-Type Transformer (>600V)",
+   "components": [
+    {
+     "key": "temperature",
+     "label": "Temperature",
+     "type": "input",
+     "inputType": "number",
+     "suffix": "°F"
+    },
+    {
+     "key": "humidity",
+     "label": "Humidity",
+     "type": "input",
+     "inputType": "number",
+     "suffix": "%"
+    }
+   ]
+  },
+  {
+   "type": "body",
+   "components": [
+    {
+     "type": "container",
+     "key": "dielectricBreakdown",
+     "label": "Dielectric Breakdown"
+    },
+    {
+     "type": "container",
+     "key": "coolingDevices",
+     "label": "Cooling Devices"
+    }
+   ]
+  },
+  {
+   "type": "footer",
+   "components": [
+    {
+     "label": "Clear PM Item",
+     "isRequired": true,
+     "key": "clearPmItem",
+     "type": "select",
+     "values": [
+      { "label": "Yes", "value": "yes" },
+      { "label": "No", "value": "no" }
+     ]
+    },
+    {
+     "key": "comments",
+     "label": "Comments",
+     "type": "textarea"
+    },
+    {
+     "key": "additionalPhotosPanel",
+     "label": "Additional Photos",
+     "type": "panel",
+     "components": [
+      {
+       "key": "additionalPhotos",
+       "type": "grid",
+       "rows": [
+        [
+         {
+          "label": "Type",
+          "key": "type",
+          "type": "select",
+          "values": [
+           { "label": "General", "value": "general" },
+           { "label": "Nameplate", "value": "nameplate" },
+           { "label": "Before", "value": "before" },
+           { "label": "After", "value": "after" },
+           { "label": "Environment", "value": "environment" }
+          ]
+         },
+         { "key": "caption", "label": "Add a Caption", "type": "input" },
+         { "key": "photo", "label": "Photo", "type": "photos", "multiple": false }
+        ]
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+"container": [
+    {
+      "label": "",
+      "key": "test",
+      "type": "selector",
+      "values": [
+        { "label": "OK", "value": "ok" },
+        { "label": "NOT OK", "value": "notOk" },
+        { "label": "N/A", "value": "nA" }
+      ],
+      "dynamicLabel": "container.label"
+    },
+    {
+      "key": "issueDescription",
+      "label": "Issue Description",
+      "type": "textarea",
+      "show": [{ "condition": "test.value", "value": "notOk" }]
+    },
+    {
+    "key": "issueType",
+    "label": "Issue Type",
+    "show": [
+        {
+            "condition": "test.value",
+            "value": "notOk"
+        }
+    ],
+    "type": "select",
+    "values": [
+        {
+            "label": "Compliance",
+            "value": 1
+        },
+        {
+            "label": "Thermal Anamoly",
+            "value": 2
+        },
+        {
+            "label": "Repair",
+            "value": 3
+        },
+        {
+            "label": "Replacement",
+            "value": 4
+        },
+        {
+            "label": "Other",
+            "value": 6
+        }
+        ]
+      },
+    {
+      "key": "beforePhoto",
+      "label": "Before Photo",
+      "type": "photos",
+      "multiple": true,
+      "show": [{ "condition": "test.value", "value": "notOk" }]
+    },
+    {
+      "label": "Resolved ?",
+      "key": "resolved",
+      "type": "select",
+      "values": [
+        { "label": "Yes", "value": "yes" },
+        { "label": "No", "value": "no" }
+      ],
+      "show": [{ "condition": "test.value", "value": "notOk" }]
+    },
+    {
+      "key": "afterPhoto",
+      "label": "After Photo",
+      "type": "photos",
+      "multiple": true,
+      "show": [
+        { "condition": "test.value", "value": "notOk" },
+        { "condition": "resolved.value", "value": "yes" }
+      ]
+    }
+  ]
+}
