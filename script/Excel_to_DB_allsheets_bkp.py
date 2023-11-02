@@ -1,11 +1,21 @@
-# %%
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 import openpyxl
+import os
 import json
+import psycopg2
 from config import config
 from db_service import addrecordsdb
 import string
 
-# %%
+
+# In[2]:
+
+
 def remove_punctuation(input_string):
     translator = str.maketrans('', '', string.punctuation)
     
@@ -13,7 +23,6 @@ def remove_punctuation(input_string):
     
     return cleaned_string
 
-# %%
 def to_camel_case(input_string):
     words = input_string.split()
 
@@ -21,7 +30,10 @@ def to_camel_case(input_string):
 
     return ''.join(camel_case_words)
 
-# %%
+
+# In[3]:
+
+
 def header_dict_util(sheet_obj):
     
     in_group = False
@@ -60,7 +72,10 @@ def header_dict_util(sheet_obj):
     return(header_dict)
     
 
-# %%
+
+# In[4]:
+
+
 def body_dict_util(sheet_obj):
     
     in_group = False
@@ -92,18 +107,17 @@ def body_dict_util(sheet_obj):
 
             if row_data[0] not in ['issueTitle','testTitle', 'tooltip', 'formTitle', 'assetClassName', 'assetClassCode', 'planName', 'pmItem']:
                 
-
+                
                 formtitle = remove_punctuation(row_data[1])
                 
                 temp['key'] = to_camel_case(formtitle)
                 temp['label'] = row_data[1]
                 temp['title'] = row_data[0]
                 
-                # print(f'Group_{i} >> ', temp)
+                print(f'Group_{i} >> ', temp)
                 
                 body_components.append(temp)
                 
-
         elif in_group:
 
             in_group = False
@@ -116,7 +130,10 @@ def body_dict_util(sheet_obj):
     return body_components_dict
         
 
-# %%
+
+# In[5]:
+
+
 def db_data(header_dict, body_components_dict, json_schema, company_id, db_table):
     
     for i in header_dict:
@@ -132,34 +149,34 @@ def db_data(header_dict, body_components_dict, json_schema, company_id, db_table
         new_json = json.dumps(json_schema)
         
         header_dict[i]['form_json'] = new_json
-        header_dict[i]['company_id'] = company_id
-
-
+        header_dict[i]['company_id'] = company_id      
         
         addrecordsdb(db_table, header_dict[i])
 
 
-# %%
+# In[6]:
+
+
 ref_json_file_path = '../src/ref_json.json'
-
-# company_id='47aa8c4d-684a-4da2-9aad-cfbb851d3f6d' #cecco company (Prod)
-company_id='22a8170a-f97c-432b-976a-28c4d7abf3ca' #EEE company (Prod)
-
+company_id='22a8170a-f97c-432b-976a-28c4d7abf3ca'
 db_table='PMItemMasterForms'
 
 with open(ref_json_file_path, 'rb') as json_file:
     json_schema = json.load(json_file)
 
-src_file_path = "../src/configs-v2-latest.xlsx"
+src_file_path = "/home/ld-164/configs-v2 (3).xlsx"
 save_dir = "../sheets/"
+exp = ['ch.25']
 
 
-# %%
+# In[7]:
+
+
 wb_obj = openpyxl.load_workbook(src_file_path)
 
 for i in wb_obj.sheetnames:
         
-    if "ch." in i:
+    if "ch." in i and i not in exp:
         
         print('ch >>> ', i)
 
@@ -168,15 +185,6 @@ for i in wb_obj.sheetnames:
         body_components_dict = body_dict_util(sheet_obj)
         
         db_data(header_dict, body_components_dict, json_schema, company_id, db_table)
-
-
-# %%
-
-
-# %%
-
-
-# %%
 
 
 

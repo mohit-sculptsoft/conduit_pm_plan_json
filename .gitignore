@@ -5,8 +5,8 @@ database.ini
 configs-v2 (1).xlsx  
 configs-v2_old.xlsx   
 configs-v2.xlsx
-
-
+.~lock.configs-v2-latest.xlsx#
+database-dev.ini
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
